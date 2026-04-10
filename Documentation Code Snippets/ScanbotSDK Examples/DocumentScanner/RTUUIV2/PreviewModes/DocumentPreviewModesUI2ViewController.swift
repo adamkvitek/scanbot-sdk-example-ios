@@ -37,12 +37,12 @@ class DocumentPreviewModesUI2ViewController: UIViewController {
         // Text with document count badge.
         let textWithBadgePreviewMode = SBSDKUI2TextWithBadgeButtonMode()
         textWithBadgePreviewMode.pageCounter.foregroundColor = SBSDKUI2Color(colorString: "#C8193C")
-        textWithBadgePreviewMode.text.color = SBSDKUI2Color(colorString: "#FFFFFF")
-        textWithBadgePreviewMode.text.visible = true
+        textWithBadgePreviewMode.title.color = SBSDKUI2Color(colorString: "#FFFFFF")
+        textWithBadgePreviewMode.title.visible = true
         
         // Only text.
         let textMode = SBSDKUI2TextButtonMode()
-        textMode.style.color = SBSDKUI2Color(colorString: "#FFFFFF")
+        textMode.title.color = SBSDKUI2Color(colorString: "#FFFFFF")
         
         // No button.
         let noButtonMode = SBSDKUI2NoButtonMode()
