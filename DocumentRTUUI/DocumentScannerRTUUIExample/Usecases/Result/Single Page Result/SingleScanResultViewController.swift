@@ -128,19 +128,15 @@ final class SingleScanResultViewController: UIViewController {
         }
     }
     
-    // Map document quality analysis result into string
-    private func map(_ documentQuality: SBSDKDocumentQuality?) -> String {
+    // Map document quality assessment result into string
+    private func map(_ documentQuality: SBSDKDocumentQualityAssessment?) -> String {
         switch documentQuality {
-        case .veryPoor:
-            return "Very Poor"
-        case .poor:
-            return "Poor"
-        case .reasonable:
-            return "Reasonable"
-        case .good:
-            return "Good"
-        case .excellent:
-            return "Excellent"
+        case .acceptable:
+            return "Acceptable"
+        case .unacceptable:
+            return "Unacceptable"
+        case .uncertain:
+            return "Uncertain"
         default:
             return "No Document"
         }

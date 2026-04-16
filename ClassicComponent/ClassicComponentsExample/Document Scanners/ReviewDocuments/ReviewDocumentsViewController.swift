@@ -22,7 +22,7 @@ final class ReviewDocumentsViewController: UIViewController {
     private var selectedImageIndex: Int?
     private var importAction: ImportAction?
     private static var showsQuality: Bool = false
-    private static var qualityCache = [URL: String]()
+    private static var qualityCache = [URL: SBSDKDocumentQualityAssessment]()
 
     private var showsQuality: Bool = showsQuality {
         didSet {
@@ -202,7 +202,7 @@ final class ReviewDocumentsViewController: UIViewController {
                    let url = try ImageManager.shared.originalImageURLAt(index: item) {
                     
                     let quality = try SBSDKDocumentQualityAnalyzer().run(image: image)
-                    Self.qualityCache[url] = quality.quality?.stringValue ?? "No document"
+                    Self.qualityCache[url] = quality.quality
                 }
             } catch {
                 DispatchQueue.main.async { [weak self] in
@@ -239,7 +239,18 @@ extension ReviewDocumentsViewController: UICollectionViewDataSource {
             if showsQuality {
                 if let imageURL = try ImageManager.shared.originalImageURLAt(index: indexPath.item) {
                     if let quality = Self.qualityCache[imageURL] {
-                        cell.infoLabelText = String(format: "Q: \(quality)")
+                        let qualityString: String
+                        switch quality {
+                        case .acceptable:
+                            qualityString = "Acceptable"
+                        case .unacceptable:
+                            qualityString = "Unacceptable"
+                        case .uncertain:
+                            qualityString = "Uncertain"
+                        default:
+                            qualityString = "No document"
+                        }
+                        cell.infoLabelText = String(format: "Q: \(qualityString)")
                     } else {
                         cell.infoLabelText = "Calculating..."
                         calculateQualityFor(indexPath.item)
