@@ -39,15 +39,15 @@ class DocumentAcknowledgmentUI2ViewController: UIViewController {
         
         // You can also configure the buttons in the bottom bar of the acknowledgment screen.
         // E.g. to force the user to retake, if the captured document is not acceptable.
-        configuration.screens.camera.acknowledgement.bottomBar.acceptWhenUncertainButton.visible = false
+        configuration.screens.camera.acknowledgement.bottomBar.acceptWhenAcceptableButton.visible = false
         
         // Hide the titles of the buttons.
-        configuration.screens.camera.acknowledgement.bottomBar.acceptWhenUncertainButton.title.visible = false
+        configuration.screens.camera.acknowledgement.bottomBar.acceptWhenAcceptableButton.title.visible = false
         configuration.screens.camera.acknowledgement.bottomBar.acceptWhenAcceptableButton.title.visible = false
         configuration.screens.camera.acknowledgement.bottomBar.retakeButton.title.visible = false
         
         // Configure the acknowledgment screen's hint message which is shown if the least acceptable quality is not met.
-        configuration.screens.camera.acknowledgement.badImageHint.visible = true
+        configuration.screens.camera.acknowledgement.unacceptableQualityWarning.visible = true
         
         // Present the view controller modally.
         do {
