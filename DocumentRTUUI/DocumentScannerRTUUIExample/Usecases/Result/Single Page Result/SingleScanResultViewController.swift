@@ -47,7 +47,7 @@ final class SingleScanResultViewController: UIViewController {
         filterListViewController.selectedFilter = { [weak self] selectedFilter in
             guard let self else { return }
             do {
-                try self.document.page(at: 0).filters = [selectedFilter]
+                try self.document.page(at: 0).filters = selectedFilter != nil ? [selectedFilter!] : []
                 self.singlePageImageView.image = try self.document.page(at: 0).documentImage?.toUIImage()
             } catch {
                 self.sbsdk_showError(error)
