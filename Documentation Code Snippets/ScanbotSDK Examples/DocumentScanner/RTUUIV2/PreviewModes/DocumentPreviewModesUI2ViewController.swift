@@ -37,12 +37,12 @@ class DocumentPreviewModesUI2ViewController: UIViewController {
         // Text with document count badge.
         let textWithBadgePreviewMode = SBSDKUI2TextWithBadgeButtonMode()
         textWithBadgePreviewMode.pageCounter.foregroundColor = SBSDKUI2Color(colorString: "#C8193C")
-        textWithBadgePreviewMode.text.color = SBSDKUI2Color(colorString: "#FFFFFF")
-        textWithBadgePreviewMode.text.visible = true
+        textWithBadgePreviewMode.title.color = SBSDKUI2Color(colorString: "#FFFFFF")
+        textWithBadgePreviewMode.title.visible = true
         
         // Only text.
         let textMode = SBSDKUI2TextButtonMode()
-        textMode.style.color = SBSDKUI2Color(colorString: "#FFFFFF")
+        textMode.title.color = SBSDKUI2Color(colorString: "#FFFFFF")
         
         // No button.
         let noButtonMode = SBSDKUI2NoButtonMode()
@@ -80,13 +80,11 @@ class DocumentPreviewModesUI2ViewController: UIViewController {
                 let documentImagePreview = scannedPage.documentImagePreview
                 let documentImagePreviewURI = scannedPage.documentImagePreviewURI
                 
-                if let documentQuality = scannedPage.documentQuality {
+                if let documentQuality = scannedPage.documentQualityAssessment {
                     switch documentQuality {
-                    case .veryPoor: print("veryPoor")
-                    case .poor: print("poor")
-                    case .reasonable: print("reasonable")
-                    case .good: print("good")
-                    case .excellent: print("excellent")
+                    case .acceptable: print("acceptable")
+                    case .unacceptable: print("unacceptable")
+                    case .uncertain: print("uncertain")
                     default: print("unknown")
                     }
                 }

@@ -92,16 +92,10 @@ class ClassicUIScannerViewController: UIViewController {
         // The view finder configuration lets you control the appearance of the view finder, 
         // e.g. if it is enabled, its aspect ratio, its colors and style, its offsets and insets and more.
         
-        // Read the current view finder configuration from the scanner view controller.
-        let viewFinderConfiguration = scannerViewController.viewFinderConfiguration
-        
-        // Modify it to your needs.
-        viewFinderConfiguration.isViewFinderEnabled = true
-        viewFinderConfiguration.aspectRatio = SBSDKAspectRatio(width: 8.0, height: 5.0)
-        viewFinderConfiguration.lineColor = UIColor.white.withAlphaComponent(0.85)
-        
-        // After changing the configuration you need to pass it back to the scanner view controller in order to apply it.
-        self.scannerViewController.viewFinderConfiguration = viewFinderConfiguration
+        // Use ViewModel @Published properties for direct property updates.
+        scannerViewController.viewModel.isViewFinderEnabled = true
+        scannerViewController.viewModel.viewFinderAspectRatio = SBSDKAspectRatio(width: 8.0, height: 5.0)
+        scannerViewController.viewFinderLineColor = UIColor.white.withAlphaComponent(0.85)
     }
 
 }
