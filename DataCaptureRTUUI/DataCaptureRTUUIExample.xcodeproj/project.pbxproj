@@ -50,6 +50,7 @@
 		F164F2612E09B2E4001F6A5A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F164F2602E09B2E4001F6A5A /* SceneDelegate.swift */; };
 		F164F7682E0AE8E1001F6A5A /* ScanbotSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F164F7672E0AE8E1001F6A5A /* ScanbotSDK */; };
 		F164F7712E0AE923001F6A5A /* ScanbotSDKOCRData.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F164F7702E0AE923001F6A5A /* ScanbotSDKOCRData.bundle */; };
+		F18908932FF3EE1200067086 /* ScanbotSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F18908922FF3EE1200067086 /* ScanbotSDK */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,6 +114,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F18908932FF3EE1200067086 /* ScanbotSDK in Frameworks */,
 				F164F7682E0AE8E1001F6A5A /* ScanbotSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -305,7 +307,7 @@
 			);
 			mainGroup = 082D0A2620C801AA009B1A7A;
 			packageReferences = (
-				F164F7662E0AE8E1001F6A5A /* XCRemoteSwiftPackageReference "scanbot-sdk-ios-spm" */,
+				F18908912FF3EE1200067086 /* XCRemoteSwiftPackageReference "scanbot-sdk-ios-spm" */,
 			);
 			productRefGroup = 082D0A3020C801AA009B1A7A /* Products */;
 			projectDirPath = "";
@@ -649,7 +651,15 @@
 			repositoryURL = "https://github.com/doo/scanbot-sdk-ios-spm.git";
 			requirement = {
 				kind = exactVersion;
-				version = "9.0.0-RC14";
+				version = 9.0.0;
+			};
+		};
+		F18908912FF3EE1200067086 /* XCRemoteSwiftPackageReference "scanbot-sdk-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/doo/scanbot-sdk-ios-spm.git";
+			requirement = {
+				kind = exactVersion;
+				version = 9.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -658,6 +668,11 @@
 		F164F7672E0AE8E1001F6A5A /* ScanbotSDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F164F7662E0AE8E1001F6A5A /* XCRemoteSwiftPackageReference "scanbot-sdk-ios-spm" */;
+			productName = ScanbotSDK;
+		};
+		F18908922FF3EE1200067086 /* ScanbotSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F18908912FF3EE1200067086 /* XCRemoteSwiftPackageReference "scanbot-sdk-ios-spm" */;
 			productName = ScanbotSDK;
 		};
 /* End XCSwiftPackageProductDependency section */

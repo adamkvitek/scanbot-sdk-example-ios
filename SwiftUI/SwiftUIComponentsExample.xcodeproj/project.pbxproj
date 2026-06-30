@@ -22,13 +22,13 @@
 		2878D92527185E530045F7EE /* SwiftUIComponentsExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2878D92427185E530045F7EE /* SwiftUIComponentsExample.swift */; };
 		2878D92727185E530045F7EE /* MainListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2878D92627185E530045F7EE /* MainListView.swift */; };
 		2878D92927185E540045F7EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2878D92827185E540045F7EE /* Assets.xcassets */; };
-		F164F77E2E0AEC93001F6A5A /* ScanbotSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F164F77D2E0AEC93001F6A5A /* ScanbotSDK */; };
 		F17D77892C78AEE9004F4BE3 /* DocumentScannerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17D77882C78AEE9004F4BE3 /* DocumentScannerListView.swift */; };
 		F17D778B2C78B1D5004F4BE3 /* DocumentScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17D778A2C78B1D5004F4BE3 /* DocumentScanner.swift */; };
 		F17D778D2C78B727004F4BE3 /* DocumentScannerContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17D778C2C78B727004F4BE3 /* DocumentScannerContainerView.swift */; };
 		F17D778F2C7DCFD3004F4BE3 /* DocumentScannerRTUUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17D778E2C7DCFD3004F4BE3 /* DocumentScannerRTUUIView.swift */; };
 		F17D77912C7DD474004F4BE3 /* DocumentScannerSwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17D77902C7DD474004F4BE3 /* DocumentScannerSwiftUIView.swift */; };
 		F17D77932C7DE38C004F4BE3 /* DocumentScanningResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17D77922C7DE38C004F4BE3 /* DocumentScanningResult.swift */; };
+		F18908902FF3EE0D00067086 /* ScanbotSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F189088F2FF3EE0D00067086 /* ScanbotSDK */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -75,7 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F164F77E2E0AEC93001F6A5A /* ScanbotSDK in Frameworks */,
+				F18908902FF3EE0D00067086 /* ScanbotSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,7 +234,7 @@
 			);
 			name = SwiftUIComponentsExample;
 			packageProductDependencies = (
-				F164F77D2E0AEC93001F6A5A /* ScanbotSDK */,
+				F189088F2FF3EE0D00067086 /* ScanbotSDK */,
 			);
 			productName = ScanbotSDKSwiftUIDemo;
 			productReference = 2878D92127185E530045F7EE /* SwiftUIComponentsExample.app */;
@@ -265,7 +265,7 @@
 			);
 			mainGroup = 2878D91827185E530045F7EE;
 			packageReferences = (
-				F164F77C2E0AEC93001F6A5A /* XCRemoteSwiftPackageReference "scanbot-sdk-ios-spm" */,
+				F189088E2FF3EE0D00067086 /* XCRemoteSwiftPackageReference "scanbot-sdk-ios-spm" */,
 			);
 			productRefGroup = 2878D92227185E530045F7EE /* Products */;
 			projectDirPath = "";
@@ -557,20 +557,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		F164F77C2E0AEC93001F6A5A /* XCRemoteSwiftPackageReference "scanbot-sdk-ios-spm" */ = {
+		F189088E2FF3EE0D00067086 /* XCRemoteSwiftPackageReference "scanbot-sdk-ios-spm" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/doo/scanbot-sdk-ios-spm.git";
 			requirement = {
 				kind = exactVersion;
-				version = "9.0.0-RC14";
+				version = 9.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		F164F77D2E0AEC93001F6A5A /* ScanbotSDK */ = {
+		F189088F2FF3EE0D00067086 /* ScanbotSDK */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F164F77C2E0AEC93001F6A5A /* XCRemoteSwiftPackageReference "scanbot-sdk-ios-spm" */;
+			package = F189088E2FF3EE0D00067086 /* XCRemoteSwiftPackageReference "scanbot-sdk-ios-spm" */;
 			productName = ScanbotSDK;
 		};
 /* End XCSwiftPackageProductDependency section */

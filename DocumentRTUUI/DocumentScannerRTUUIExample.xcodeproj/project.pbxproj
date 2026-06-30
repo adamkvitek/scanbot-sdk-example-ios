@@ -577,7 +577,7 @@
 			repositoryURL = "https://github.com/doo/scanbot-sdk-ios-spm.git";
 			requirement = {
 				kind = exactVersion;
-				version = "9.0.0-RC14";
+				version = 9.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
