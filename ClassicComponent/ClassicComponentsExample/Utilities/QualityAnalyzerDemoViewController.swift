@@ -64,7 +64,17 @@ final class QualityAnalyzerDemoViewController: UIViewController {
     }
     
     private func show(result: SBSDKDocumentQualityAnalyzerResult) {
-        let quality = result.quality?.stringValue ?? "No document"
+        let quality: String
+        switch result.quality {
+        case .acceptable:
+            quality = "Acceptable"
+        case .unacceptable:
+            quality = "Unacceptable"
+        case .uncertain:
+            quality = "Uncertain"
+        default:
+            quality = "No document"
+        }
         let resultString = "Quality = \(quality)"
         let alert = UIAlertController(title: "Quality Analysis",
                                       message: resultString,
