@@ -49,7 +49,6 @@ class ImageEnhancerFromImageViewController: UIViewController,
                                    SBSDKAspectRatio(width: 3, height: 4)]
         
         // Clockwise coordinates of the document in the image.
-        // Normally the coordinates from the DocumentScanner result object can be passed here.
         let corners: [CGPoint] = [
             CGPoint(x: 0.05, y: 0.05), // top-left corner
             CGPoint(x: 0.95, y: 0.05), // top-right corner
@@ -65,12 +64,9 @@ class ImageEnhancerFromImageViewController: UIViewController,
             let imageRef = SBSDKImageRef.fromUIImage(image: image)
             
             // Straighten the image using the document enhancer.
-            let result = try enhancer.straighten(image: imageRef,
-                                                 parameters: parameters,
-                                                 priorCornersNormalized: corners)
-            
-            // Retrieve the straightened image from the result.
-            let straightenedImage = result.straightenedImage
+            let straightendedImageRef = try enhancer.straighten(image: imageRef,
+                                                                parameters: parameters,
+                                                                priorCornersNormalized: corners)
         }
         catch {
             print("Failed to straighten image: \(error.localizedDescription)")
