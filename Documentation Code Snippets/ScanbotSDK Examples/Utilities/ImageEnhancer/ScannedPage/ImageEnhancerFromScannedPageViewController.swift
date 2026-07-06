@@ -34,6 +34,14 @@ class ImageEnhancerFromScannedPageViewController: UIViewController {
                                    SBSDKAspectRatio(width: 16, height: 9),
                                    SBSDKAspectRatio(width: 3, height: 4)]
         
+        // Clockwise coordinates of the document in the image.
+        let corners: [CGPoint] = [
+            CGPoint(x: 0.05, y: 0.05), // top-left corner
+            CGPoint(x: 0.95, y: 0.05), // top-right corner
+            CGPoint(x: 0.95, y: 0.95), // bottom-right corner
+            CGPoint(x: 0.05, y: 0.95)  // bottom-left corner
+        ]
+        
         do {
             
             // Retrieve the scanned document.
