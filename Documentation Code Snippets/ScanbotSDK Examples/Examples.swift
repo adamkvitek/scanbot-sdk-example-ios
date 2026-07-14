@@ -61,6 +61,7 @@ enum ExampleCategory: String, CaseIterable {
                     DocumentAcknowledgmentUI2ViewController.self,
                     DocumentImageStraighteningUI2ViewController.self,
                     DocumentScannerViewController.self,
+                    DocumentScannerClassicSwiftUIHostingViewController.self,
                     ScanOnImageCroppingUIViewController.self,
                     DirectDocumentDetectionViewController.self]
         case .imageEditing:
@@ -85,6 +86,7 @@ enum ExampleCategory: String, CaseIterable {
                     TinyBarcodeScannerUI2ViewController.self,
                     BarcodesSheetModeUI2ViewController.self,
                     BarcodeScannerViewController.self,
+                    BarcodeScannerClassicSwiftUIHostingViewController.self,
                     BarcodesBatchViewController.self,
                     BarcodesOverlayViewController.self,
                     BarcodeScanAndCountViewController.self,
@@ -95,6 +97,7 @@ enum ExampleCategory: String, CaseIterable {
         case .documentData:
             return [DocumentDataExtractorSwiftUIHostingViewController.self,
                     DocumentDataExtractorViewController.self,
+                    DocumentDataExtractorClassicSwiftUIHostingViewController.self,
                     DocumentDataExtractorTopBarUI2ViewController.self,
                     DocumentDataExtractorUserGuidanceUI2ViewController.self,
                     DocumentDataExtractorIntroductionUI2ViewController.self,
@@ -107,6 +110,7 @@ enum ExampleCategory: String, CaseIterable {
         case .textPattern:
             return [TextPatternSwiftUIHostingViewController.self,
                     TextPatternScannerViewController.self,
+                    TextPatternScannerClassicSwiftUIHostingViewController.self,
                     TextPatternLaunchingUI2ViewController.self,
                     TextPatternFinderOverlayUI2ViewController.self,
                     TextPatternPaletteUI2ViewController.self,
@@ -119,6 +123,7 @@ enum ExampleCategory: String, CaseIterable {
         case .mrz:
             return [MRZSwiftUIHostingViewController.self,
                     MRZScannerViewController.self,
+                    MRZScannerClassicSwiftUIHostingViewController.self,
                     MRZLaunchingUI2ViewController.self,
                     MRZPaletteUI2ViewController.self,
                     MRZLocalizationUI2ViewController.self,
@@ -131,10 +136,12 @@ enum ExampleCategory: String, CaseIterable {
         case .ehic:
             return [EHICExtractorViewController.self]
         case .medical:
-            return [MedicalCertificateScannerViewController.self]
+            return [MedicalCertificateScannerViewController.self,
+                    MedicalCertificateScannerClassicSwiftUIHostingViewController.self]
         case .check:
             return [CheckSwiftUIHostingViewController.self,
                     CheckScannerViewController.self,
+                    CheckScannerClassicSwiftUIHostingViewController.self,
                     CheckTopBarUI2ViewController.self,
                     CheckLaunchingUI2ViewController.self,
                     CheckUserGuidanceUI2ViewController.self,
@@ -147,6 +154,7 @@ enum ExampleCategory: String, CaseIterable {
         case .vin:
             return [VINSwiftUIHostingViewController.self,
                     VINScannerViewController.self,
+                    VINScannerClassicSwiftUIHostingViewController.self,
                     VINLaunchingUI2ViewController.self,
                     VINPaletteUI2ViewController.self,
                     VINLocalizationUI2ViewController.self,
@@ -159,6 +167,7 @@ enum ExampleCategory: String, CaseIterable {
         case .creditCard:
             return [CreditCardSwiftUIHostingViewController.self,
                     CreditCardScannerViewController.self,
+                    CreditCardScannerClassicSwiftUIHostingViewController.self,
                     CreditCardLaunchingUI2ViewController.self,
                     CreditCardPaletteUI2ViewController.self,
                     CreditCardLocalizationUI2ViewController.self,
@@ -255,6 +264,107 @@ enum ExampleCategory: String, CaseIterable {
         super.init(rootView: DocumentDataExtractorSwiftUIView())
     }
     
+    @objc required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// MARK: - Classic UI (SBSDKScannerView) SwiftUI hosting controllers
+
+@objcMembers class DocumentScannerClassicSwiftUIHostingViewController: UIHostingController<DocumentScannerSwiftUIScannerView> {
+
+    init() {
+        super.init(rootView: DocumentScannerSwiftUIScannerView())
+    }
+
+    @objc required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+@objcMembers class BarcodeScannerClassicSwiftUIHostingViewController: UIHostingController<BarcodeScannerSwiftUIScannerView> {
+
+    init() {
+        super.init(rootView: BarcodeScannerSwiftUIScannerView())
+    }
+
+    @objc required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+@objcMembers class MRZScannerClassicSwiftUIHostingViewController: UIHostingController<MRZScannerSwiftUIScannerView> {
+
+    init() {
+        super.init(rootView: MRZScannerSwiftUIScannerView())
+    }
+
+    @objc required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+@objcMembers class CheckScannerClassicSwiftUIHostingViewController: UIHostingController<CheckScannerSwiftUIScannerView> {
+
+    init() {
+        super.init(rootView: CheckScannerSwiftUIScannerView())
+    }
+
+    @objc required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+@objcMembers class MedicalCertificateScannerClassicSwiftUIHostingViewController: UIHostingController<MedicalCertificateScannerSwiftUIScannerView> {
+
+    init() {
+        super.init(rootView: MedicalCertificateScannerSwiftUIScannerView())
+    }
+
+    @objc required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+@objcMembers class VINScannerClassicSwiftUIHostingViewController: UIHostingController<VINScannerSwiftUIScannerView> {
+
+    init() {
+        super.init(rootView: VINScannerSwiftUIScannerView())
+    }
+
+    @objc required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+@objcMembers class TextPatternScannerClassicSwiftUIHostingViewController: UIHostingController<TextPatternScannerSwiftUIScannerView> {
+
+    init() {
+        super.init(rootView: TextPatternScannerSwiftUIScannerView())
+    }
+
+    @objc required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+@objcMembers class CreditCardScannerClassicSwiftUIHostingViewController: UIHostingController<CreditCardScannerSwiftUIScannerView> {
+
+    init() {
+        super.init(rootView: CreditCardScannerSwiftUIScannerView())
+    }
+
+    @objc required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+@objcMembers class DocumentDataExtractorClassicSwiftUIHostingViewController: UIHostingController<DocumentDataExtractorSwiftUIScannerView> {
+
+    init() {
+        super.init(rootView: DocumentDataExtractorSwiftUIScannerView())
+    }
+
     @objc required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -10,92 +10,77 @@ import ScanbotSDK
 
 class ClassicUIScannerViewController: UIViewController {
 
-    // The instance of the ClassicUI scanner view controller, as an example here SBSDKDocumentScannerViewController 
-    // is used, but this code applies to all SBSDKBaseScannerViewController-derived ClassicUI scanner view controllers.
+    // The instance of the ClassicUI scanner view controller. `SBSDKDocumentScannerViewController` is used
+    // here as an example, but this code applies to all `SBSDKBaseScannerViewController`-derived ClassicUI
+    // scanner view controllers.
     var scannerViewController: SBSDKDocumentScannerViewController!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Create the ClassicUI scanner view controller instance. As an example here `SBSDKDocumentScannerViewController`
-        // is used, but this code applies to all SBSDKBaseScannerViewController-derived ClassicUI scanner view controllers.
+        // Create the ClassicUI scanner view controller instance. `SBSDKDocumentScannerViewController`
+        // is used here as an example, but this code applies to all `SBSDKBaseScannerViewController`-
+        // derived ClassicUI scanner view controllers.
         self.scannerViewController = SBSDKDocumentScannerViewController(parentViewController: self,
                                                                         parentView: self.view,
                                                                         delegate: self)
-        
-        // Now you can configure some general properties using one of the configuration objects.
-        //
-        // As demonstrated in the functions below there are 3 steps:
-        // 1. Read the current configuration from the scanner view controller.
-        // 2. Modify the configuration to your needs.
-        // 3. Pass the modified configuration back to the scanner view controller to apply it.
-        
+
+        // The scanner view controller exposes its state through its `model` (an
+        // `SBSDKBaseScannerModel`-derived observable object) and the underlying `model.camera`.
+        // Set properties on either directly to configure the scanner at runtime. Both are
+        // KVO-observable, so you can also react to their changes from Swift, SwiftUI and Obj-C.
+
         self.applyGeneralConfiguration()
         self.applyZoomConfiguration()
         self.applyEnergyConfiguration()
         self.applyViewFinderConfiguration()
     }
-    
+
     func applyGeneralConfiguration() {
 
-        // The general configuration lets you control timings, video settings and behavior etc.
-        
-        // Read the current general configuration from the scanner view controller.
-        let generalConfiguration = self.scannerViewController.generalConfiguration
-        
-        // Modify it to your needs.
-        generalConfiguration.minimumTimeWithoutDeviceMotionBeforeDetection = 0.5
-        // To keep session alive until deallocated.
-        generalConfiguration.cameraSessionKeepAliveTimeout = TimeInterval.greatestFiniteMagnitude
-        
-        // After changing the configuration you need to pass it back to the scanner view controller in order to apply it.
-        self.scannerViewController.generalConfiguration = generalConfiguration
+        // General scanner behavior lives on the model's configuration. Timings, motion and video
+        // settings are set directly on it — no configuration snapshot to read/modify/write.
+        scannerViewController.model.configuration.minimumTimeWithoutDeviceMotionBeforeDetection = 0.5
+
+        // Camera-session-level settings live on `model.camera`. Setting the keep-alive timeout
+        // to `.greatestFiniteMagnitude` keeps the camera session alive until the model is
+        // deallocated.
+        scannerViewController.model.camera.keepAliveTimeout = .greatestFiniteMagnitude
     }
-    
+
     func applyZoomConfiguration() {
 
-        // The zoom configuration lets you control the zooming behavior of the scanner view controller, e.g. 
-        // if zooming is enabled, the zoom range, the initial zoom factor, discrete zoom steps and zoom related gestures.
-
-        // Read the current zoom configuration from the scanner view controller.
-        let zoomConfiguration = scannerViewController.zoomConfiguration
-        
-        // Modify it to your needs.
-        zoomConfiguration.isZoomingEnabled = true
-        zoomConfiguration.zoomRange = SBSDKZoomRange(minZoom: 1.0, maxZoom: 12.0)
-        zoomConfiguration.initialZoomFactor = 2.0
-        zoomConfiguration.isPinchToZoomEnabled = true
-        
-        // After changing the configuration you need to pass it back to the scanner view controller in order to apply it.
-        self.scannerViewController.zoomConfiguration = zoomConfiguration
+        // Zooming is a camera-session feature and is configured on `model.camera`. Set gestures,
+        // discrete zoom steps and the initial zoom factor directly — changes take effect immediately.
+        let camera = scannerViewController.model.camera
+        camera.isZoomingEnabled = true
+        camera.isPinchToZoomEnabled = true
+        camera.isDoubleTapToZoomEnabled = true
+        // Zoom steps define the discrete stops used by double-tap zooming and constrain the
+        // effective zoom range. The first entry is the minimum, the last entry the maximum.
+        camera.zoomSteps = [1.0, 12.0]
+        camera.initialZoomFactor = 2.0
     }
-    
+
     func applyEnergyConfiguration() {
-        
-        // The energy configuration lets you control the energy consumption of the scanner view controller, e.g. by 
-        // turning the energy-safe-mode on or off, changing the detection rates and the inactivity timeout.
 
-        // Read the current energy configuration from the scanner view controller.
-        let energyConfiguration = scannerViewController.energyConfiguration
-        
-        // Modify it to your needs.
-        energyConfiguration.inactivityTimeout = 10.0
-        energyConfiguration.detectionRate = 60
-        energyConfiguration.energySaveDetectionRate = 5
-        
-        // After changing the configuration you need to pass it back to the scanner view controller in order to apply it.
-        self.scannerViewController.energyConfiguration = energyConfiguration
+        // Energy-saving behavior (detection rates, inactivity timeout) lives on the model's configuration
+        // and can be tweaked live.
+        let configuration = scannerViewController.model.configuration
+        configuration.isEnergySavingEnabled = true
+        configuration.inactivityTimeout = 10.0
+        configuration.detectionRate = 60
+        configuration.energySaveDetectionRate = 5
     }
-    
+
     func applyViewFinderConfiguration() {
-        
-        // The view finder configuration lets you control the appearance of the view finder, 
-        // e.g. if it is enabled, its aspect ratio, its colors and style, its offsets and insets and more.
-        
-        // Use ViewModel @Published properties for direct property updates.
-        scannerViewController.viewModel.isViewFinderEnabled = true
-        scannerViewController.viewModel.viewFinderAspectRatio = SBSDKAspectRatio(width: 8.0, height: 5.0)
-        scannerViewController.viewFinderLineColor = UIColor.white.withAlphaComponent(0.85)
+
+        // The view finder is a set of the model's configuration properties. Toggle it on, change its aspect ratio
+        // and appearance — SwiftUI-backed classic UI updates automatically.
+        let configuration = scannerViewController.model.configuration
+        configuration.isViewFinderEnabled = true
+        configuration.viewFinderAspectRatio = SBSDKAspectRatio(width: 8.0, height: 5.0)
+        configuration.viewFinderLineColor = UIColor.white.withAlphaComponent(0.85)
     }
 
 }

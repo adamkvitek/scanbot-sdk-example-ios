@@ -1,0 +1,57 @@
+//
+//  VINScannerSwiftUIScannerView.swift
+//  ScanbotSDK Examples
+//
+//  Pure-SwiftUI counterpart of `VINScannerViewController`.
+//
+
+import SwiftUI
+import ScanbotSDK
+
+struct VINScannerSwiftUIScannerView: View {
+
+    // The scanner model backing the `SBSDKScannerView` below. It owns the camera session, the
+    // scanner configuration and the frame-engine state, and is the SwiftUI equivalent of the
+    // Classic UI `SBSDKVINScannerViewController`.
+    @State private var model: SBSDKVINScannerModel = {
+
+        // Create an instance of the configuration for vehicle identification numbers.
+        let configuration = SBSDKVINScannerConfiguration()
+
+        // Enable extraction of VIN from barcode.
+        configuration.extractVINFromBarcode = true
+
+        return try! SBSDKVINScannerModel(scannerConfiguration: configuration)
+    }()
+
+    var body: some View {
+
+        // Embed the `SBSDKVINScannerModel`-driven camera/detection UI.
+        SBSDKScannerView(viewModel: model)
+            // Subscribe to the frame engine's result/failure events. This replaces
+            // `SBSDKVINScannerViewControllerDelegate`.
+            .onReceive(model.vinFrameEngine.events) { event in
+                switch event {
+                case .failure(let error):
+                    // Handle the error.
+                    print("Error scanning VIN: \(error.localizedDescription)")
+
+                case .result(let result):
+                    // Process the result.
+
+                    // If `extractVINFromBarcode` from the configuration is set to `True`, you must check the barcode result first.
+                    if result.barcodeResult.status == .success && !result.barcodeResult.extractedVIN.isEmpty {
+                        print(result.barcodeResult.extractedVIN)
+
+                    // else check the text result.
+                    } else if result.textResult.validationSuccessful && !result.textResult.rawText.isEmpty {
+                        print(result.textResult.rawText)
+                    }
+                }
+            }
+    }
+}
+
+#Preview {
+    VINScannerSwiftUIScannerView()
+}

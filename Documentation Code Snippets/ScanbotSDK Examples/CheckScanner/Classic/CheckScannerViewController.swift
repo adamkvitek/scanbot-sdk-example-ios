@@ -30,8 +30,8 @@ class CheckScannerViewController: UIViewController {
         
         // Customize the default accepted check types as needed.
         // For this example we will use the following types of check.
-        self.scannerViewController?.acceptedCheckTypes = [.usaCheck, .uaeCheck, .fraCheck, .isrCheck,
-                                                          .kwtCheck, .ausCheck, .indCheck, .canCheck]
+        self.scannerViewController?.model.checkConfiguration.acceptedCheckTypes = [.usaCheck, .uaeCheck, .fraCheck, .isrCheck,
+                                                                                   .kwtCheck, .ausCheck, .indCheck, .canCheck]
     }
 }
 
@@ -59,8 +59,6 @@ extension CheckScannerViewController: SBSDKCheckScannerViewControllerDelegate {
         switch state {
         case .searching:
             self.statusLabel?.text = "Looking for the check"
-        case .scanning:
-            self.statusLabel?.text = "Scanning the check"
         case .capturing:
             self.statusLabel?.text = "Capturing the check"
         case .energySaving:
