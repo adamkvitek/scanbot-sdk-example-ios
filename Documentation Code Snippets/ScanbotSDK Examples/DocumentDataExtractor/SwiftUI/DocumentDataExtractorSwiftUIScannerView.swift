@@ -13,7 +13,7 @@ struct DocumentDataExtractorSwiftUIScannerView: View {
     // The scanner model backing the `SBSDKScannerView` below. It owns the camera session, the
     // scanner configuration and the frame-engine state, and is the SwiftUI equivalent of the
     // Classic UI `SBSDKDocumentDataExtractorViewController`.
-    @State private var model: SBSDKDocumentDataExtractorModel = {
+    @State private var viewModel: SBSDKDocumentDataExtractorViewModel = {
 
         // To create a list of accepted document types.
         var acceptedTypes = [String]()
@@ -43,49 +43,53 @@ struct DocumentDataExtractorSwiftUIScannerView: View {
         // Enable the crops image extraction.
         configuration.returnCrops = true
 
-        let model = try! SBSDKDocumentDataExtractorModel(scannerConfiguration: configuration)
+        let viewModel = try! SBSDKDocumentDataExtractorViewModel(scannerConfiguration: configuration)
 
         // Turn the flashlight on/off.
-        model.camera.isFlashlightEnabled = false
+        viewModel.camera.isTorchLightEnabled = false
 
         // Configure the viewfinder.
         // Enable the view finder
-        model.configuration.isViewFinderEnabled = true
+        viewModel.configuration.viewFinder.isViewFinderEnabled = true
 
         // Configure the view finder colors and line properties.
-        model.configuration.viewFinderLineColor = UIColor.red
-        model.configuration.viewFinderBackgroundColor = UIColor.red.withAlphaComponent(0.1)
-        model.configuration.viewFinderLineWidth = 2
-        model.configuration.viewFinderLineCornerRadius = 8
+        viewModel.configuration.viewFinder.lineColor = UIColor.red
+        viewModel.configuration.viewFinder.backgroundColor = UIColor.red.withAlphaComponent(0.1)
+        viewModel.configuration.viewFinder.lineWidth = 2
+        viewModel.configuration.viewFinder.lineCornerRadius = 8
 
-        return model
+        return viewModel
     }()
 
     var body: some View {
 
-        // Embed the `SBSDKDocumentDataExtractorModel`-driven camera/detection UI.
-        SBSDKScannerView(viewModel: model)
+        // Embed the `SBSDKDocumentDataExtractorViewModel`-driven camera/detection UI.
+        SBSDKScannerView(model: viewModel)
             // Subscribe to the frame engine's result/failure events. This replaces
             // `SBSDKDocumentDataExtractorViewControllerDelegate`.
-            .onReceive(model.documentDataExtractorFrameEngine.events) { event in
+            .onReceive(viewModel.frameEngine.events) { event in
                 switch event {
-                case .result(let scan):
+                case .validResult(let result, _):
                     // Access the document's fields directly by iterating over the document's fields.
-                    scan.result.document?.fields.forEach { field in
+                    result.document?.fields.forEach { field in
                         // Print field type name, field text and field confidence to the console.
                         print("\(field.type.name) = \(field.value?.text ?? "") (Confidence: \(field.value?.confidence ?? 0.0)")
                     }
 
                     // Get the cropped image.
-                    let croppedImage = try? scan.result.croppedImage?.toUIImage()
+                    let croppedImage = try? result.croppedImage?.toUIImage()
 
                     // Or get a field by its name.
-                    if let nameField = scan.result.document?.field(by: "Surname") {
+                    if let nameField = result.document?.field(by: "Surname") {
                         // Access various properties of the field.
                         let fieldTypeName = nameField.type.name
                         let fieldValue = nameField.value?.text
                         let confidence = nameField.value?.confidence
                     }
+
+                case .everyFrame:
+                    // Fired for every processed frame, before validity is checked; nothing to do here.
+                    break
 
                 case .failure(let error):
                     // Handle the error.

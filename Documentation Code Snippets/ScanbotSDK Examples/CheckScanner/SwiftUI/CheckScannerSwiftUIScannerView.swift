@@ -16,25 +16,25 @@ struct CheckScannerSwiftUIScannerView: View {
     // The scanner model backing the `SBSDKScannerView` below. It owns the camera session, the
     // scanner configuration and the frame-engine state, and is the SwiftUI equivalent of the
     // Classic UI `SBSDKCheckScannerViewController`.
-    @State private var model: SBSDKCheckScannerModel = {
+    @State private var viewModel: SBSDKCheckScannerViewModel = {
 
         // Create a configuration with `detectAndCropDocument` to extract the check image.
         let configuration = SBSDKCheckScannerConfiguration(documentDetectionMode: .detectAndCropDocument)
 
-        let model = try! SBSDKCheckScannerModel(scannerConfiguration: configuration)
+        let model = try! SBSDKCheckScannerViewModel(scannerConfiguration: configuration)
 
         // Customize the default accepted check types as needed.
         // For this example we will use the following types of check.
-        model.checkConfiguration.acceptedCheckTypes = [.usaCheck, .uaeCheck, .fraCheck, .isrCheck,
-                                                        .kwtCheck, .ausCheck, .indCheck, .canCheck]
+        model.configuration.acceptedCheckTypes = [.usaCheck, .uaeCheck, .fraCheck, .isrCheck,
+                                                  .kwtCheck, .ausCheck, .indCheck, .canCheck]
         return model
     }()
 
     var body: some View {
         ZStack(alignment: .top) {
 
-            // Embed the `SBSDKCheckScannerModel`-driven camera/detection UI.
-            SBSDKScannerView(viewModel: model)
+            // Embed the `SBSDKCheckScannerViewModel`-driven camera/detection UI.
+            SBSDKScannerView(model: viewModel)
 
             Text(statusText)
                 .padding()
@@ -45,13 +45,17 @@ struct CheckScannerSwiftUIScannerView: View {
         }
         // Subscribe to the frame engine's result/failure events. This replaces
         // `SBSDKCheckScannerViewControllerDelegate`.
-        .onReceive(model.checkFrameEngine.events) { event in
+        .onReceive(viewModel.frameEngine.events) { event in
             switch event {
-            case .result(.snap(let result)), .result(.sample(let result)):
+            case .capturedResult(let result, _), .validResult(let result, _):
                 // Process the scanned result.
 
                 // Get the cropped image.
                 let croppedImage = try? result.croppedImage?.toUIImage()
+
+            case .everyFrame:
+                // Fired for every processed frame, before validity is checked; nothing to do here.
+                break
 
             case .failure(let error):
                 // Handle the error.
@@ -59,7 +63,7 @@ struct CheckScannerSwiftUIScannerView: View {
             }
         }
         // Subscribe to state changes, mirroring the `didChangeState` delegate callback.
-        .onReceive(model.checkFrameEngine.publisher(for: \.state, options: [.initial, .new])) { state in
+        .onReceive(viewModel.frameEngine.publisher(for: \.state, options: [.initial, .new])) { state in
 
             // Update status label according to status
             switch state {

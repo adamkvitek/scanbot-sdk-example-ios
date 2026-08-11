@@ -34,7 +34,7 @@ class DocumentReviewScreenUI2ViewController: UIViewController {
         reviewScreenConfiguration.zoomButton.visible = false
         
         // Hide the add button.
-        reviewScreenConfiguration.bottomBar.addButton.visible = false
+        reviewScreenConfiguration.toolBar.addButton.barButton.visible = false
         
         // Retrieve the instance of the reorder pages configuration from the main configuration object.
         let reorderScreenConfiguration = configuration.screens.reorderPages
@@ -52,21 +52,13 @@ class DocumentReviewScreenUI2ViewController: UIViewController {
         croppingScreenConfiguration.bottomBar.resetButton.visible = false
         
         // Retrieve the retake button configuration from the main configuration object.
-        let retakeButtonConfiguration = configuration.screens.review.bottomBar.retakeButton
+        let retakeButtonConfiguration = configuration.screens.review.toolBar.retakeButton.barButton
         
         // Show the retake button.
         retakeButtonConfiguration.visible = true
         
         // Configure the retake title color.
         retakeButtonConfiguration.title.color = SBSDKUI2Color(uiColor: UIColor.white)
-        
-        // Apply the retake configuration button to the review bottom bar configuration.
-        configuration.screens.review.bottomBar.retakeButton = retakeButtonConfiguration
-        
-        // Apply the configurations.
-        configuration.screens.review = reviewScreenConfiguration
-        configuration.screens.reorderPages = reorderScreenConfiguration
-        configuration.screens.cropping = croppingScreenConfiguration
         
         // Present the view controller modally.
         do {

@@ -13,7 +13,9 @@ struct DocumentScannerSwiftUIScannerView: View {
     // The scanner model backing the `SBSDKScannerView` below. It owns the camera session, the
     // scanner configuration and the frame-engine state, and is the SwiftUI equivalent of the
     // Classic UI `SBSDKDocumentScannerViewController`.
-    @State private var model = SBSDKDocumentScannerModel()
+    // `try!` is safe here for example purposes; a real app should surface the thrown
+    // `SBSDKError` (e.g. an invalid/missing license) instead of force-trying.
+    @State private var viewModel = try! SBSDKDocumentScannerViewModel()
 
     // The last scanned result, shown as a simple text overlay.
     @State private var resultText: String?
@@ -21,8 +23,8 @@ struct DocumentScannerSwiftUIScannerView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
 
-            // Embed the `SBSDKDocumentScannerModel`-driven camera/detection UI.
-            SBSDKScannerView(viewModel: model)
+            // Embed the `SBSDKDocumentScannerViewModel`-driven camera/detection UI.
+            SBSDKScannerView(model: viewModel)
 
             if let resultText {
                 Text(resultText)
@@ -35,16 +37,18 @@ struct DocumentScannerSwiftUIScannerView: View {
         }
         // Subscribe to the frame engine's result/failure events. This replaces
         // `SBSDKDocumentScannerViewControllerDelegate`.
-        .onReceive(model.documentFrameEngine.events) { event in
+        .onReceive(viewModel.frameEngine.events) { event in
             switch event {
-            case .result(.snap(let snap)):
-                // Process the detected document.
+            case .capturedResult(_, let payload):
+                if let payload {
+                    // Process the detected document.
 
-                // Convert ImageRef to UIImage if needed.
-                let documentUIImage = try? snap.documentImage.toUIImage()
-                resultText = "Auto-snapped: \(snap.autoSnapped ? "Yes" : "No")"
+                    // Convert ImageRef to UIImage if needed.
+                    let documentUIImage = try? payload.documentImage.toUIImage()
+                    resultText = "Auto-snapped: \(payload.autoSnapped ? "Yes" : "No")"
+                }
 
-            case .result(.sample):
+            case .everyFrame, .validResult:
                 // A per-frame sample without a completed snap; nothing to do here.
                 break
 

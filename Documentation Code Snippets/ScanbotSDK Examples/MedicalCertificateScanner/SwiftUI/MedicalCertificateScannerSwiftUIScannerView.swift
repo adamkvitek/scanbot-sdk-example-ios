@@ -13,7 +13,7 @@ struct MedicalCertificateScannerSwiftUIScannerView: View {
     // The scanner model backing the `SBSDKScannerView` below. It owns the camera session, the
     // scanner configuration and the frame-engine state, and is the SwiftUI equivalent of the
     // Classic UI `SBSDKMedicalCertificateScannerViewController`.
-    @State private var model: SBSDKMedicalCertificateScannerModel = {
+    @State private var viewModel: SBSDKMedicalCertificateScannerViewModel = {
 
         // Create an instance of `SBSDKMedicalCertificateScanningParameters` with default values.
         let scanningParameters = SBSDKMedicalCertificateScanningParameters()
@@ -27,22 +27,26 @@ struct MedicalCertificateScannerSwiftUIScannerView: View {
         scanningParameters.recognizeBarcode = true
         scanningParameters.preprocessInput = false
 
-        return try! SBSDKMedicalCertificateScannerModel(scanningParameters: scanningParameters)
+        return try! SBSDKMedicalCertificateScannerViewModel(scannerConfiguration: scanningParameters)
     }()
 
     var body: some View {
 
-        // Embed the `SBSDKMedicalCertificateScannerModel`-driven camera/detection UI.
-        SBSDKScannerView(viewModel: model)
+        // Embed the `SBSDKMedicalCertificateScannerViewModel`-driven camera/detection UI.
+        SBSDKScannerView(model: viewModel)
             // Subscribe to the frame engine's result/failure events. This replaces
             // `SBSDKMedicalCertificateScannerViewControllerDelegate`.
-            .onReceive(model.medicalCertificateFrameEngine.events) { event in
+            .onReceive(viewModel.frameEngine.events) { event in
                 switch event {
-                case .result(.snap(let result)), .result(.sample(let result)):
+                case .capturedResult(let result, _), .validResult(let result, _):
                     // Process the scanned result.
 
                     // Get the cropped image.
                     let croppedImage = try? result.croppedImage?.toUIImage()
+
+                case .everyFrame:
+                    // Fired for every processed frame, before validity is checked; nothing to do here.
+                    break
 
                 case .failure(let error):
                     // Handle the error.

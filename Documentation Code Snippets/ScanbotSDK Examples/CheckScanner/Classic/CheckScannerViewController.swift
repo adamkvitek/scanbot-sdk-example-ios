@@ -30,8 +30,8 @@ class CheckScannerViewController: UIViewController {
         
         // Customize the default accepted check types as needed.
         // For this example we will use the following types of check.
-        self.scannerViewController?.model.checkConfiguration.acceptedCheckTypes = [.usaCheck, .uaeCheck, .fraCheck, .isrCheck,
-                                                                                   .kwtCheck, .ausCheck, .indCheck, .canCheck]
+        self.scannerViewController?.viewModel.configuration.acceptedCheckTypes = [.usaCheck, .uaeCheck, .fraCheck, .isrCheck,
+                                                                              .kwtCheck, .ausCheck, .indCheck, .canCheck]
     }
 }
 

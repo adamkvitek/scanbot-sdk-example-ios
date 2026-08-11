@@ -39,12 +39,18 @@ struct TextPatternScannerSwiftUIView: View {
         } else {
             
             // Show the scanner, passing the configuration and handling the result.
-            SBSDKUI2TextPatternScannerView(configuration: configuration) { result, error in
+            // `SBSDKUI2TextPatternScannerView`'s initializer now throws (e.g. on an invalid/missing
+            // license), so we use `try?` here and show an inline error view on failure.
+            if let scannerView = try? SBSDKUI2TextPatternScannerView(configuration: configuration, completion: { result, error in
                 
                 scannedTextPattern = result
                 scanError = error
+            }) {
+                scannerView
+                    .ignoresSafeArea()
+            } else {
+                Text("Failed to create the Text Pattern scanner. Please check your license.")
             }
-            .ignoresSafeArea()
         }
     }
 }

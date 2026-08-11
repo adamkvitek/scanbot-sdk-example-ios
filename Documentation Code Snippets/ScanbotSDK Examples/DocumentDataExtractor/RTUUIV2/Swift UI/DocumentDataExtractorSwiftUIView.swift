@@ -27,13 +27,18 @@ struct DocumentDataExtractorSwiftUIView: View {
         
         if scannedDocument == nil, scanError == nil {
             
-            // Show the scanner, passing the configuration and handling the result.
-            SBSDKUI2DocumentDataExtractorView(configuration: configuration) { result, error in
+            // `SBSDKUI2DocumentDataExtractorView`'s initializer now throws (e.g. on an invalid/missing
+            // license), so we use `try?` here and show an inline error view on failure.
+            if let scannerView = try? SBSDKUI2DocumentDataExtractorView(configuration: configuration, completion: { result, error in
                 
                 scannedDocument = result
                 scanError = error
+            }) {
+                scannerView
+                    .ignoresSafeArea()
+            } else {
+                Text("Failed to create the document data extractor. Please check your license.")
             }
-            .ignoresSafeArea()
             
         } else if let scanError {
             

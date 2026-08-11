@@ -74,12 +74,16 @@ struct DocumentScannerSwiftUIView: View {
         } else {
             
             // Show the scanner, passing the configuration and handling the result.
-            SBSDKUI2DocumentScannerView(configuration: configuration,
-                                        completion: { document, error in
+            if let scannerView = try? SBSDKUI2DocumentScannerView(configuration: configuration,
+                                                                  completion: { document, error in
                 scannedDocument = document
                 scanError = error
-            })
-            .ignoresSafeArea()
+            }) {
+                scannerView
+                    .ignoresSafeArea()
+            } else {
+                Text("Failed to initialize the document scanner.")
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ struct VINScannerSwiftUIScannerView: View {
     // The scanner model backing the `SBSDKScannerView` below. It owns the camera session, the
     // scanner configuration and the frame-engine state, and is the SwiftUI equivalent of the
     // Classic UI `SBSDKVINScannerViewController`.
-    @State private var model: SBSDKVINScannerModel = {
+    @State private var viewModel: SBSDKVINScannerViewModel = {
 
         // Create an instance of the configuration for vehicle identification numbers.
         let configuration = SBSDKVINScannerConfiguration()
@@ -21,22 +21,22 @@ struct VINScannerSwiftUIScannerView: View {
         // Enable extraction of VIN from barcode.
         configuration.extractVINFromBarcode = true
 
-        return try! SBSDKVINScannerModel(scannerConfiguration: configuration)
+        return try! SBSDKVINScannerViewModel(scannerConfiguration: configuration)
     }()
 
     var body: some View {
 
-        // Embed the `SBSDKVINScannerModel`-driven camera/detection UI.
-        SBSDKScannerView(viewModel: model)
+        // Embed the `SBSDKVINScannerViewModel`-driven camera/detection UI.
+        SBSDKScannerView(model: viewModel)
             // Subscribe to the frame engine's result/failure events. This replaces
             // `SBSDKVINScannerViewControllerDelegate`.
-            .onReceive(model.vinFrameEngine.events) { event in
+            .onReceive(viewModel.frameEngine.events) { event in
                 switch event {
                 case .failure(let error):
                     // Handle the error.
                     print("Error scanning VIN: \(error.localizedDescription)")
 
-                case .result(let result):
+                case .validResult(let result, _):
                     // Process the result.
 
                     // If `extractVINFromBarcode` from the configuration is set to `True`, you must check the barcode result first.
@@ -47,6 +47,10 @@ struct VINScannerSwiftUIScannerView: View {
                     } else if result.textResult.validationSuccessful && !result.textResult.rawText.isEmpty {
                         print(result.textResult.rawText)
                     }
+
+                case .everyFrame:
+                    // Fired for every processed frame, before validity is checked; nothing to do here.
+                    break
                 }
             }
     }

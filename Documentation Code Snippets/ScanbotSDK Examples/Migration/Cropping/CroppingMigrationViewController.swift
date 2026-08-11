@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 import ScanbotSDK
 
 // Your ViewController class:
@@ -18,39 +19,39 @@ class CroppingMigrationViewController: UIViewController {
     }
 
     @IBAction func openScannerTapped(_ sender: Any) {
-        Task {
-            await openCroppingRtuV2()
-        }
+        openCroppingRtuV2()
     }
 
-    func openCroppingRtuV2() async {
-        
+    func openCroppingRtuV2() {
         let configuration = SBSDKUI2CroppingConfiguration(documentUuid: "<documentUuid>",
                                                           pageUuid: "<pageUuid>")
 
-        // ...screen configuration
-
-        // Present the view controller modally.
-        do {
-            let result = try await SBSDKUI2CroppingViewController.present(on: self,
-                                                                          configuration: configuration)
-            // The screen is dismissed without errors.
-            // Process the edited page.
-            let document = try SBSDKScannedDocument.loadDocument(documentUuid: result.documentUuid)
-            let page = try document.page(with: result.pageUuid)
-            self.imageView.image = try page.documentImage?.toUIImage()
-            
-        } catch SBSDKError.operationCanceled {
-            print("The operation was cancelled before completion or by the user")
-            
-        } catch {
-            // Any other error
-            print("Error editing image: \(error.localizedDescription)")
+        let croppingView = SBSDKUI2CroppingView(configuration: configuration) { [weak self] result, error in
+            guard let self else { return }
+            if let error = error {
+                if case SBSDKError.operationCanceled = error {
+                    print("The operation was cancelled before completion or by the user")
+                } else {
+                    print("Error editing image: \(error.localizedDescription)")
+                }
+                return
+            }
+            guard let result = result else { return }
+            do {
+                let document = try SBSDKScannedDocument.loadDocument(documentUuid: result.documentUuid)
+                let page = try document.page(with: result.pageUuid)
+                self.imageView.image = try page.documentImage?.toUIImage()
+            } catch {
+                print("Error editing image: \(error.localizedDescription)")
+            }
         }
+
+        let hostingController = UIHostingController(rootView: croppingView)
+        hostingController.modalPresentationStyle = .fullScreen
+        present(hostingController, animated: true)
     }
     
-    func configExampleCroppingRtuV2() async {
-        
+    func configExampleCroppingRtuV2() {
         let configuration = SBSDKUI2CroppingConfiguration(documentUuid: "<documentUuid>",
                                                           pageUuid: "<pageUuid>")
 
@@ -60,18 +61,11 @@ class CroppingMigrationViewController: UIViewController {
         // Now all the text resources are in the localization object.
         configuration.localization.croppingTopBarConfirmButtonTitle = "Apply"
 
-        // Present the view controller modally.
-        do {
-            let result = try await SBSDKUI2CroppingViewController.present(on: self,
-                                                                          configuration: configuration)
+        let croppingView = SBSDKUI2CroppingView(configuration: configuration) { _, _ in
             // Handle the result.
-            
-        } catch SBSDKError.operationCanceled {
-            print("The operation was cancelled before completion or by the user")
-            
-        } catch {
-            // Any other error
-            print("Error editing image: \(error.localizedDescription)")
         }
+        let hostingController = UIHostingController(rootView: croppingView)
+        hostingController.modalPresentationStyle = .fullScreen
+        present(hostingController, animated: true)
     }
 }

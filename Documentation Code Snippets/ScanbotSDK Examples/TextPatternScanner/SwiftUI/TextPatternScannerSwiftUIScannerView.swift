@@ -13,24 +13,27 @@ struct TextPatternScannerSwiftUIScannerView: View {
     // The scanner model backing the `SBSDKScannerView` below. It owns the camera session, the
     // scanner configuration and the frame-engine state, and is the SwiftUI equivalent of the
     // Classic UI `SBSDKTextPatternScannerViewController`.
-    @State private var model: SBSDKTextPatternScannerModel = {
+    @State private var viewModel: SBSDKTextPatternScannerViewModel = {
 
         // Create the default `SBSDKTextPatternScannerConfiguration` object.
         let configuration = SBSDKTextPatternScannerConfiguration()
-
-        return try! SBSDKTextPatternScannerModel(scannerConfiguration: configuration)
+        return try! SBSDKTextPatternScannerViewModel(scannerConfiguration: configuration)
     }()
 
     var body: some View {
 
-        // Embed the `SBSDKTextPatternScannerModel`-driven camera/detection UI.
-        SBSDKScannerView(viewModel: model)
+        // Embed the `SBSDKTextPatternScannerViewModel`-driven camera/detection UI.
+        SBSDKScannerView(model: viewModel)
             // Subscribe to the frame engine's result/failure events. This replaces
             // `SBSDKTextPatternScannerViewControllerDelegate`.
-            .onReceive(model.textPatternFrameEngine.events) { event in
+            .onReceive(viewModel.frameEngine.events) { event in
                 switch event {
-                case .result(let result):
+                case .validResult(let result, _):
                     // Process the scanned result.
+                    break
+
+                case .everyFrame:
+                    // Fired for every processed frame, before validity is checked; nothing to do here.
                     break
 
                 case .failure(let error):

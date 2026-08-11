@@ -57,16 +57,16 @@ class ImageEnhancerFromImageViewController: UIViewController,
         ]
         
         do {
-            // Initialize the document enhancer.
-            let enhancer = try SBSDKDocumentEnhancer.create()
+            // Initialize the document straightener.
+            let straightener = try SBSDKDocumentStraightener.create()
             
             // Create an image ref from UIImage.
             let imageRef = SBSDKImageRef.fromUIImage(image: image)
             
             // Straighten the image using the document enhancer.
-            let straightendedImageRef = try enhancer.straighten(image: imageRef,
-                                                                parameters: parameters,
-                                                                priorCornersNormalized: corners)
+            let straightendedImageRef = try straightener.run(image: imageRef,
+                                                             parameters: parameters,
+                                                             priorCornersNormalized: corners)
         }
         catch {
             print("Failed to straighten image: \(error.localizedDescription)")

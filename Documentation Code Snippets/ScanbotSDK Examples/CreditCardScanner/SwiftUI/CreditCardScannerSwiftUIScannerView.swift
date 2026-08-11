@@ -13,7 +13,7 @@ struct CreditCardScannerSwiftUIScannerView: View {
     // The scanner model backing the `SBSDKScannerView` below. It owns the camera session, the
     // scanner configuration and the frame-engine state, and is the SwiftUI equivalent of the
     // Classic UI `SBSDKCreditCardScannerViewController`.
-    @State private var model: SBSDKCreditCardScannerModel = {
+    @State private var viewModel: SBSDKCreditCardScannerViewModel = {
 
         // Create the default `SBSDKCreditCardScannerConfiguration` object.
         let configuration = SBSDKCreditCardScannerConfiguration()
@@ -27,22 +27,22 @@ struct CreditCardScannerSwiftUIScannerView: View {
         // Enable the credit card image extraction.
         configuration.returnCreditCardImage = true
 
-        return try! SBSDKCreditCardScannerModel(scannerConfiguration: configuration)
+        return try! SBSDKCreditCardScannerViewModel(scannerConfiguration: configuration)
     }()
 
     var body: some View {
 
-        // Embed the `SBSDKCreditCardScannerModel`-driven camera/detection UI.
-        SBSDKScannerView(viewModel: model)
+        // Embed the `SBSDKCreditCardScannerViewModel`-driven camera/detection UI.
+        SBSDKScannerView(model: viewModel)
             // Subscribe to the frame engine's result/failure events. This replaces
             // `SBSDKCreditCardScannerViewControllerDelegate`.
-            .onReceive(model.creditCardFrameEngine.events) { event in
+            .onReceive(viewModel.frameEngine.events) { event in
                 switch event {
                 case .failure(let error):
                     // Handle the error.
                     print("Error scanning credit card: \(error.localizedDescription)")
 
-                case .result(let result):
+                case .validResult(let result, _):
                     // Access the document's fields directly by iterating over the document's fields.
                     result.creditCard?.fields.forEach { field in
                         // Print field type name, field text and field confidence to the console.
@@ -70,6 +70,10 @@ struct CreditCardScannerSwiftUIScannerView: View {
                             print("Expiration date: \(expiryDate.value?.text ?? "")")
                         }
                     }
+
+                case .everyFrame:
+                    // Fired for every processed frame, before validity is checked; nothing to do here.
+                    break
                 }
             }
     }

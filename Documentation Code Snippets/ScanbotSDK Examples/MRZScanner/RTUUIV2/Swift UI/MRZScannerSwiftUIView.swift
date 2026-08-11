@@ -27,12 +27,18 @@ struct MRZScannerSwiftUIView: View {
         if scannedMRZ == nil && scanError == nil {
             
             // Show the scanner, passing the configuration and handling the result.
-            SBSDKUI2MRZScannerView(configuration: configuration) { result, error in
+            // `SBSDKUI2MRZScannerView`'s initializer now throws (e.g. on an invalid/missing
+            // license), so we use `try?` here and show an inline error view on failure.
+            if let scannerView = try? SBSDKUI2MRZScannerView(configuration: configuration, completion: { result, error in
                 
                 scannedMRZ = result
                 scanError = error
+            }) {
+                scannerView
+                    .ignoresSafeArea()
+            } else {
+                Text("Failed to create the MRZ scanner. Please check your license.")
             }
-            .ignoresSafeArea()
             
         } else if let scannedMRZ {
             // Process and show the scanned MRZ here.

@@ -28,12 +28,18 @@ struct CreditCardScannerSwiftUIView: View {
         if scannedCreditCard == nil && scanError == nil {
             
             // Show the scanner, passing the configuration and handling the result.
-            SBSDKUI2CreditCardScannerView(configuration: configuration) { result, error in
+            // `SBSDKUI2CreditCardScannerView`'s initializer now throws (e.g. on an invalid/missing
+            // license), so we use `try?` here and show an inline error view on failure.
+            if let scannerView = try? SBSDKUI2CreditCardScannerView(configuration: configuration, completion: { result, error in
                 
                 scannedCreditCard = result
                 scanError = error
+            }) {
+                scannerView
+                    .ignoresSafeArea()
+            } else {
+                Text("Failed to create the Credit Card scanner. Please check your license.")
             }
-            .ignoresSafeArea()
             
         } else if let scannedCreditCard {
             

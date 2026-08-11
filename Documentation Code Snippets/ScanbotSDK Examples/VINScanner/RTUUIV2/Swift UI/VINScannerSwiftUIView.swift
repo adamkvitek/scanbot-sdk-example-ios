@@ -29,12 +29,18 @@ struct VINScannerSwiftUIView: View {
         if scannedVIN == nil, scanError == nil {
             
             // Show the scanner, passing the configuration and handling the result.
-            SBSDKUI2VINScannerView(configuration: configuration) { result, error in
+            // `SBSDKUI2VINScannerView`'s initializer now throws (e.g. on an invalid/missing
+            // license), so we use `try?` here and show an inline error view on failure.
+            if let scannerView = try? SBSDKUI2VINScannerView(configuration: configuration, completion: { result, error in
                 
                 scannedVIN = result
                 scanError = error
+            }) {
+                scannerView
+                    .ignoresSafeArea()
+            } else {
+                Text("Failed to create the VIN scanner. Please check your license.")
             }
-            .ignoresSafeArea()
             
         } else if let scannedVIN {
             

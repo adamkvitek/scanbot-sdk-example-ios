@@ -59,17 +59,17 @@ class DocumentDataExtractorViewController: UIViewController {
         // Define additional configuration of the extractor view controller.
         
         // Turn the flashlight on/off.
-        self.extractorController.model.camera.isFlashlightEnabled = false
+        self.extractorController.viewModel.camera.isTorchLightEnabled = false
         
         // Configure the viewfinder.
         // Enable the view finder
-        self.extractorController.model.configuration.isViewFinderEnabled = true
+        self.extractorController.viewModel.configuration.viewFinder.isViewFinderEnabled = true
         
         // Configure the view finder colors and line properties.
-        self.extractorController.model.configuration.viewFinderLineColor = UIColor.red
-        self.extractorController.model.configuration.viewFinderBackgroundColor = UIColor.red.withAlphaComponent(0.1)
-        self.extractorController.model.configuration.viewFinderLineWidth = 2
-        self.extractorController.model.configuration.viewFinderLineCornerRadius = 8
+        self.extractorController.viewModel.configuration.viewFinder.lineColor = UIColor.red
+        self.extractorController.viewModel.configuration.viewFinder.backgroundColor = UIColor.red.withAlphaComponent(0.1)
+        self.extractorController.viewModel.configuration.viewFinder.lineWidth = 2
+        self.extractorController.viewModel.configuration.viewFinder.lineCornerRadius = 8
     }
 }
 

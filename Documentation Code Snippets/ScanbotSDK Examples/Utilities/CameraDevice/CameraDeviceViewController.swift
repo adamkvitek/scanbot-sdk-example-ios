@@ -43,6 +43,6 @@ class CameraDeviceViewController: UIViewController {
                                                          delegate: nil)
         
         // Assign the device to the scanner.
-        scanner?.model.camera.device = device
-    }    
+        scanner?.viewModel.camera.device = device
+    }
 }

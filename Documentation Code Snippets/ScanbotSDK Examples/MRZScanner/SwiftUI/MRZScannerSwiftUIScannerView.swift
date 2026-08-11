@@ -13,7 +13,7 @@ struct MRZScannerSwiftUIScannerView: View {
     // The scanner model backing the `SBSDKScannerView` below. It owns the camera session, the
     // scanner configuration and the frame-engine state, and is the SwiftUI equivalent of the
     // Classic UI `SBSDKMRZScannerViewController`.
-    @State private var model: SBSDKMRZScannerModel = {
+    @State private var viewModel: SBSDKMRZScannerViewModel = {
 
         // Create the default configuration.
         let configuration = SBSDKMRZScannerConfiguration()
@@ -30,19 +30,23 @@ struct MRZScannerSwiftUIScannerView: View {
         // Whether to accept or reject incomplete MRZ results.
         configuration.incompleteResultHandling = .accept
 
-        return try! SBSDKMRZScannerModel(scannerConfiguration: configuration)
+        return try! SBSDKMRZScannerViewModel(scannerConfiguration: configuration)
     }()
 
     var body: some View {
 
-        // Embed the `SBSDKMRZScannerModel`-driven camera/detection UI.
-        SBSDKScannerView(viewModel: model)
+        // Embed the `SBSDKMRZScannerViewModel`-driven camera/detection UI.
+        SBSDKScannerView(model: viewModel)
             // Subscribe to the frame engine's result/failure events. This replaces
             // `SBSDKMRZScannerViewControllerDelegate`.
-            .onReceive(model.mrzFrameEngine.events) { event in
+            .onReceive(viewModel.frameEngine.events) { event in
                 switch event {
-                case .result(let result):
+                case .validResult(let result, _):
                     // Process the scanned result.
+                    break
+
+                case .everyFrame:
+                    // Fired for every processed frame, before validity is checked; nothing to do here.
                     break
 
                 case .failure(let error):

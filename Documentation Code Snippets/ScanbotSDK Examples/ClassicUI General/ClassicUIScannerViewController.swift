@@ -26,7 +26,7 @@ class ClassicUIScannerViewController: UIViewController {
                                                                         delegate: self)
 
         // The scanner view controller exposes its state through its `model` (an
-        // `SBSDKBaseScannerModel`-derived observable object) and the underlying `model.camera`.
+        // `SBSDKBaseScannerModel`-derived observable object) and the underlying `viewModel.camera`.
         // Set properties on either directly to configure the scanner at runtime. Both are
         // KVO-observable, so you can also react to their changes from Swift, SwiftUI and Obj-C.
 
@@ -40,19 +40,19 @@ class ClassicUIScannerViewController: UIViewController {
 
         // General scanner behavior lives on the model's configuration. Timings, motion and video
         // settings are set directly on it — no configuration snapshot to read/modify/write.
-        scannerViewController.model.configuration.minimumTimeWithoutDeviceMotionBeforeDetection = 0.5
+        scannerViewController.viewModel.configuration.userInterface.minimumTimeWithoutDeviceMotionBeforeDetection = 0.5
 
-        // Camera-session-level settings live on `model.camera`. Setting the keep-alive timeout
+        // Camera-session-level settings live on `viewModel.camera`. Setting the keep-alive timeout
         // to `.greatestFiniteMagnitude` keeps the camera session alive until the model is
         // deallocated.
-        scannerViewController.model.camera.keepAliveTimeout = .greatestFiniteMagnitude
+        scannerViewController.viewModel.camera.keepAliveTimeout = .greatestFiniteMagnitude
     }
 
     func applyZoomConfiguration() {
 
-        // Zooming is a camera-session feature and is configured on `model.camera`. Set gestures,
+        // Zooming is a camera-session feature and is configured on `viewModel.camera`. Set gestures,
         // discrete zoom steps and the initial zoom factor directly — changes take effect immediately.
-        let camera = scannerViewController.model.camera
+        let camera = scannerViewController.viewModel.camera
         camera.isZoomingEnabled = true
         camera.isPinchToZoomEnabled = true
         camera.isDoubleTapToZoomEnabled = true
@@ -64,23 +64,23 @@ class ClassicUIScannerViewController: UIViewController {
 
     func applyEnergyConfiguration() {
 
-        // Energy-saving behavior (detection rates, inactivity timeout) lives on the model's configuration
-        // and can be tweaked live.
-        let configuration = scannerViewController.model.configuration
-        configuration.isEnergySavingEnabled = true
-        configuration.inactivityTimeout = 10.0
-        configuration.detectionRate = 60
-        configuration.energySaveDetectionRate = 5
+        // Energy-saving behavior (detection rates, inactivity timeout) lives on the model's
+        // user-interface sub-configuration and can be tweaked live.
+        let userInterface = scannerViewController.viewModel.configuration.userInterface
+        userInterface.isEnergySavingEnabled = true
+        userInterface.inactivityTimeout = 10.0
+        userInterface.detectionRate = 60
+        userInterface.energySaveDetectionRate = 5
     }
 
     func applyViewFinderConfiguration() {
 
-        // The view finder is a set of the model's configuration properties. Toggle it on, change its aspect ratio
-        // and appearance — SwiftUI-backed classic UI updates automatically.
-        let configuration = scannerViewController.model.configuration
-        configuration.isViewFinderEnabled = true
-        configuration.viewFinderAspectRatio = SBSDKAspectRatio(width: 8.0, height: 5.0)
-        configuration.viewFinderLineColor = UIColor.white.withAlphaComponent(0.85)
+        // The view finder lives on the model's view-finder sub-configuration. Toggle it on, change its
+        // aspect ratio and appearance — SwiftUI-backed classic UI updates automatically.
+        let viewFinder = scannerViewController.viewModel.configuration.viewFinder
+        viewFinder.isViewFinderEnabled = true
+        viewFinder.aspectRatio = SBSDKAspectRatio(width: 8.0, height: 5.0)
+        viewFinder.lineColor = UIColor.white.withAlphaComponent(0.85)
     }
 
 }
