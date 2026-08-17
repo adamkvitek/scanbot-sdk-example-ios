@@ -34,7 +34,7 @@ class MockCameraViewController: UIViewController {
         // Or pass nil for `capturedImageURL` to use the current frame of the `imageURL` when capturing a still image.
         // If `refreshOnEachFrame` is set to `true` the image is reloaded/downloaded after each frame.
         // Otherwise the image is loaded only once and reused per frame.
-        scannerViewController.baseViewModel.camera.startReplay(with: SBSDKCameraReplayData(label: "Mock Camera",
+        scannerViewController.baseViewModel.camera.startReplay(with: SBSDKCameraMockData(label: "Mock Camera",
                                                                                            imageURL: imageUrl,
                                                                                            capturedImageURL: nil,
                                                                                            refreshOnEachFrame: false))
@@ -48,7 +48,7 @@ class MockCameraViewController: UIViewController {
         // Otherwise the image is loaded only once and reused per frame.
         //
         // let imageName = "<image_name>"
-        // scannerViewController.baseViewModel.camera.startReplay(with: SBSDKCameraReplayData(label: "Mock Camera",
+        // scannerViewController.baseViewModel.camera.startReplay(with: SBSDKCameraMockData(label: "Mock Camera",
         //                                                                                    imageName: imageName,
         //                                                                                    capturedImageName: nil,
         //                                                                                    refreshOnEachFrame: false))
