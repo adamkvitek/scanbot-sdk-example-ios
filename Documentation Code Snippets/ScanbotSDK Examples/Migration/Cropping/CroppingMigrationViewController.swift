@@ -23,7 +23,7 @@ class CroppingMigrationViewController: UIViewController {
     }
 
     func openCroppingRtuV2() {
-        let configuration = SBSDKUI2CroppingConfiguration(documentUuid: "<documentUuid>",
+        let configuration = SBSDKUI2CroppingStandaloneConfiguration(documentUuid: "<documentUuid>",
                                                           pageUuid: "<pageUuid>")
 
         let croppingView = SBSDKUI2CroppingView(configuration: configuration) { [weak self] result, error in
@@ -52,7 +52,7 @@ class CroppingMigrationViewController: UIViewController {
     }
     
     func configExampleCroppingRtuV2() {
-        let configuration = SBSDKUI2CroppingConfiguration(documentUuid: "<documentUuid>",
+        let configuration = SBSDKUI2CroppingStandaloneConfiguration(documentUuid: "<documentUuid>",
                                                           pageUuid: "<pageUuid>")
 
         // All the colors can be conveniently set using the Palette object:

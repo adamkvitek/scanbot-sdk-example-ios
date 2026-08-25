@@ -74,10 +74,10 @@ class DocumentScannerMigrationViewController: UIViewController {
         cameraScreenConfiguration.captureFeedback.snapFeedbackMode = SBSDKUI2PageSnapFeedbackMode.pageSnapCheckMarkAnimation()
 
         // You may hide the import button in the camera screen, if you don't need it:
-        cameraScreenConfiguration.bottomBar.importButton.visible = false
+        cameraScreenConfiguration.toolBar.importButton.visible = false
 
         // Equivalent to uiConfiguration.bottomBarBackgroundColor = UIColor.blue, but not recommended:
-        configuration.appearance.bottomBarBackgroundColor = SBSDKUI2Color(uiColor: UIColor.blue)
+        configuration.appearance.toolBarBackgroundColor = SBSDKUI2Color(uiColor: UIColor.blue)
 
         // However, now all the colors can be conveniently set using the Palette object:
         let palette = configuration.palette
@@ -128,10 +128,10 @@ class DocumentScannerMigrationViewController: UIViewController {
         viewFinder.visible = true
         viewFinder.aspectRatio = SBSDKAspectRatio(width: 3, height: 4)
 
-        let bottomBar = cameraScreenConfiguration.bottomBar
-        bottomBar.previewButton = SBSDKUI2PreviewButton.noButtonMode()
-        bottomBar.autoSnappingModeButton.visible = false
-        bottomBar.importButton.visible = false
+        let toolBar = cameraScreenConfiguration.toolBar
+        toolBar.previewButton = SBSDKUI2PreviewButton.noButtonMode()
+        toolBar.autoSnappingModeButton.visible = false
+        toolBar.importButton.visible = false
 
         cameraScreenConfiguration.acknowledgement.acknowledgementMode = SBSDKUI2AcknowledgementMode.none
         cameraScreenConfiguration.captureFeedback.snapFeedbackMode = SBSDKUI2PageSnapFeedbackMode.pageSnapCheckMarkAnimation()

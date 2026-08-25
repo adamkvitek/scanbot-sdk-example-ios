@@ -22,7 +22,7 @@ class CropScreenUI2ViewController: UIViewController {
             let cropScreenConfiguration = configuration.screens.cropping
             
             // For example disable the rotation feature...
-            cropScreenConfiguration.bottomBar.rotateButton.visible = false
+            cropScreenConfiguration.toolBar.rotateButton.visible = false
             
             // ... configure various colors...
             configuration.appearance.topBarBackgroundColor = SBSDKUI2Color(colorString: "#C8193C")

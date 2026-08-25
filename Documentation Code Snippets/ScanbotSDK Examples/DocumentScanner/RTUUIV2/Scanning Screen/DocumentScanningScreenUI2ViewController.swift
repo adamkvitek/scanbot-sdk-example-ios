@@ -68,24 +68,24 @@ class DocumentScanningScreenUI2ViewController: UIViewController {
         
         
         // Set the background color of the bottom bar.
-        configuration.appearance.bottomBarBackgroundColor = SBSDKUI2Color(colorString: "#C8193C")
+        configuration.appearance.toolBarBackgroundColor = SBSDKUI2Color(colorString: "#C8193C")
         
         // Import button used to import image from the gallery.
-        cameraScreenConfig.bottomBar.importButton.visible = true
-        cameraScreenConfig.bottomBar.importButton.title.visible = true
-        cameraScreenConfig.bottomBar.importButton.title.text = "Import"
+        cameraScreenConfig.toolBar.importButton.visible = true
+        cameraScreenConfig.toolBar.importButton.title.visible = true
+        cameraScreenConfig.toolBar.importButton.title.text = "Import"
         
         // Configure the auto/manual snap button.
-        cameraScreenConfig.bottomBar.autoSnappingModeButton.title.visible = true
-        cameraScreenConfig.bottomBar.autoSnappingModeButton.title.text = "Auto"
-        cameraScreenConfig.bottomBar.manualSnappingModeButton.title.visible = true
-        cameraScreenConfig.bottomBar.manualSnappingModeButton.title.text = "Manual"
+        cameraScreenConfig.toolBar.autoSnappingModeButton.title.visible = true
+        cameraScreenConfig.toolBar.autoSnappingModeButton.title.text = "Auto"
+        cameraScreenConfig.toolBar.manualSnappingModeButton.title.visible = true
+        cameraScreenConfig.toolBar.manualSnappingModeButton.title.text = "Manual"
         
         // Configure the torch off/on button.
-        cameraScreenConfig.bottomBar.torchOnButton.title.visible = true
-        cameraScreenConfig.bottomBar.torchOnButton.title.text = "On"
-        cameraScreenConfig.bottomBar.torchOffButton.title.visible = true
-        cameraScreenConfig.bottomBar.torchOffButton.title.text = "Off"
+        cameraScreenConfig.toolBar.torchOnButton.title.visible = true
+        cameraScreenConfig.toolBar.torchOnButton.title.text = "On"
+        cameraScreenConfig.toolBar.torchOffButton.title.visible = true
+        cameraScreenConfig.toolBar.torchOffButton.title.text = "Off"
         
         
         // Configure the camera blink behavior when an image is captured.

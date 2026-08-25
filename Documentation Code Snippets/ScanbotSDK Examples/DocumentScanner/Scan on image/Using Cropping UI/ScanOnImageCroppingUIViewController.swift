@@ -48,11 +48,11 @@ class ScanOnImageCroppingUIViewController: UIViewController,
         let page = try document.addPage(with: imageRef)
         
         // Create the default configuration object.
-        let configuration = SBSDKUI2CroppingConfiguration(documentUuid: document.uuid, pageUuid: page.uuid)
+        let configuration = SBSDKUI2CroppingStandaloneConfiguration(documentUuid: document.uuid, pageUuid: page.uuid)
         
         // Modify the configuration to your needs.
         // E.g. disable the rotation feature.
-        configuration.cropping.bottomBar.rotateButton.visible = false
+        configuration.cropping.toolBar.rotateButton.visible = false
         
         // E.g. configure various colors.
         configuration.appearance.topBarBackgroundColor = SBSDKUI2Color(uiColor: UIColor.red)

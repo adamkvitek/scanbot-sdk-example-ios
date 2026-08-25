@@ -48,7 +48,7 @@ class DocumentPreviewModesUI2ViewController: UIViewController {
         let noButtonMode = SBSDKUI2NoButtonMode()
         
         // Set the desired mode.
-        cameraScreenConfig.bottomBar.previewButton = imagePreviewMode
+        cameraScreenConfig.toolBar.previewButton = imagePreviewMode
         
         // Present the view controller modally.
         do {

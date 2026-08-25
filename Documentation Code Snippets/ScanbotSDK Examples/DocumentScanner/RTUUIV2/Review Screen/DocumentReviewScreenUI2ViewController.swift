@@ -49,7 +49,7 @@ class DocumentReviewScreenUI2ViewController: UIViewController {
         let croppingScreenConfiguration = configuration.screens.cropping
         
         // Hide the reset button.
-        croppingScreenConfiguration.bottomBar.resetButton.visible = false
+        croppingScreenConfiguration.toolBar.resetButton.visible = false
         
         // Retrieve the retake button configuration from the main configuration object.
         let retakeButtonConfiguration = configuration.screens.review.toolBar.retakeButton.barButton
